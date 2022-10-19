@@ -1,6 +1,6 @@
 CFLAGS := -Wall -Wextra -iquote ./include
 DEFS := -D NONE
-NAME := tp3
+NAME := bioinsp
 
 SRC_DIR := src
 OBJ_DIR := obj
