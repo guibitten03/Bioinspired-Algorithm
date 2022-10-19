@@ -15,7 +15,7 @@ typedef struct args_t * Args;
 void argShowUsage(char * programName);
 void argsParse(Args a, int argc, char ** argv);
 
-void fileGetMatrix(FILE * f, int ** matrix, int matrixSz);
+void fileGetMatrix(FILE * f, int * matrix, int matrixSz);
 
 int main(int argc, char ** argv){
     args arguments;
@@ -28,13 +28,13 @@ int main(int argc, char ** argv){
         return EXIT_FAILURE;
     }
 
-    int matrixSize;
+    int matrixSize; 
     if (!strcmp(arguments.type, "lau")){ matrixSize = 15; }
     if (!strcmp(arguments.type, "sgb")) { matrixSize = 128; }
 
     int matrix[matrixSize][matrixSize];
 
-    fileGetMatrix(inputFile, matrix, matrixSize);
+    fileGetMatrix(inputFile, &matrix, matrixSize);
 
 }
 
@@ -54,17 +54,17 @@ void argShowUsage(char * programName){
     
 }
 
-void fileGetMatrix(FILE * f, int ** matrix, int matrixSz){
+void fileGetMatrix(FILE * f, int * matrix, int matrixSz){
     char buffer[200];
 
     int hasInput = 1;
     int count = 0;
     while(hasInput){
-        fgets(buffer, sizeof(buffer) / sizeof(buffer[0]), f);
-        if (!strcmp(buffer[0], '#')){
-            printf("Tralha\n");
-            break;
+        fgets(buffer, sizeof(buffer), f);
+        if (buffer[0] == '#'){
+            
         }
+        break;
     }
 
 }
