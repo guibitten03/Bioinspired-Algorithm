@@ -15,7 +15,7 @@ typedef struct args_t * Args;
 void argShowUsage(char * programName);
 void argsParse(Args a, int argc, char ** argv);
 
-void fileGetMatrix(FILE * f, int * matrix, int matrixSz);
+void fileGetMatrix(FILE * f, int ** matrix, int matrixSz);
 
 int main(int argc, char ** argv){
     args arguments;
@@ -54,17 +54,23 @@ void argShowUsage(char * programName){
     
 }
 
-void fileGetMatrix(FILE * f, int * matrix, int matrixSz){
+void fileGetMatrix(FILE * f, int ** matrix, int matrixSz){
     char buffer[200];
 
     int hasInput = 1;
-    int count = 0;
+    int row = 0;
     while(hasInput){
         fgets(buffer, sizeof(buffer), f);
         if (buffer[0] == '#'){
-            
+            continue;
         }
-        break;
+        
+        for(int i = 0; i < matrixSz; i++){
+            matrix[row][i] = buffer[i];
+        }
+        // row++;
+        printf(matrix[row][0]);
+        break; 
     }
 
 }
