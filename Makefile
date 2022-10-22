@@ -1,4 +1,4 @@
-CFLAGS := -Wall -Wextra -iquote ./include
+CFLAGS := -g -Wall -Wextra -iquote ./include
 DEFS := -D NONE
 NAME := bioinsp
 
