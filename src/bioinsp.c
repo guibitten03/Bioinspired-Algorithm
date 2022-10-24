@@ -2,6 +2,8 @@
 
 #define INFINITO 100000000
 
+int seed = 0;
+
 int bioinsp(Matrix matrix, int populationSz, int plato){
     int stop = 0;
     int pastBestDist = INFINITO;
@@ -40,4 +42,23 @@ Population createPopulation(Matrix matrix, int populationSz){
     return population;
 }
 
+Individuo createIndividuo(int individuoSz){
+    int random, modifi;
 
+    Individuo individuo;
+    individuo.dist = INFINITO;
+    individuo.individuo = (int*)malloc(individuoSz*sizeof(int));
+
+    srand(time(NULL)+seed);
+    for(int c=0; c<individuoSz; c++){
+        random = rand()  % individuoSz;
+        
+        while (/* condition */)
+        {
+            /* code */
+        }
+        
+    }
+
+    return individuo;
+}
