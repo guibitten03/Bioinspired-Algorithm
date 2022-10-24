@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #include "bioinsp.h"
 
 #define INFINITO 100000000
@@ -31,7 +33,7 @@ Population createPopulation(Matrix matrix, int populationSz){
     population.matrix = matrix;
     population.populationSz = populationSz;
     population.bestIndividuo.dist = INFINITO;
-    population.bestIndividuo.individuo = NULL;
+    population.bestIndividuo.traits = NULL;
     population.population = (Individuo*)malloc(populationSz*sizeof(Individuo));
 
     for(int c=0; c<populationSz; c++){
@@ -47,7 +49,7 @@ Individuo createIndividuo(int individuoSz){
 
     Individuo individuo;
     individuo.dist = INFINITO;
-    individuo.individuo = (int*)malloc(individuoSz*sizeof(int));
+    individuo.traits = (int*)malloc(individuoSz*sizeof(int));
 
     srand(time(NULL)+seed);
     for(int c=0; c<individuoSz; c++){
@@ -61,4 +63,13 @@ Individuo createIndividuo(int individuoSz){
     }
 
     return individuo;
+}
+
+void crossover(Population* population){
+    bool par = population->populationSz % 2 == 0;
+    for(int i = 0; i < (population->populationSz+1); i++){
+        if(bool){
+            
+        }
+    }
 }
