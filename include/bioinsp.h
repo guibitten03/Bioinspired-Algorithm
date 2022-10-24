@@ -9,12 +9,13 @@
 #include "evaluation.h"
 
 struct individuo_t{
-    int * individuo;
+    int traitsSz;
+    int * traits;
     int dist;
 };
 
 struct population_t{
-    Individuo *population;
+    Individuo * population;
     Matrix matrix;
     int populationSz;
     Individuo bestIndividuo;
