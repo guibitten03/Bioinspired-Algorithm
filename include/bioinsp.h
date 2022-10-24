@@ -24,7 +24,7 @@ typedef struct individuo_t Individuo;
 typedef struct population_t Population;
 
 Population createPopulation(Matrix matrix, int populationSz);
-Individuo* createIndividuo(int individuoSz);
+Individuo createIndividuo(int individuoSz);
 void crossover(Population* population);
 void Mutation(Individuo* individuo);
 int bioinsp(Matrix matrix, int populationSz, int plato);
