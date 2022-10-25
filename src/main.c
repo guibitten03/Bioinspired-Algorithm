@@ -8,7 +8,7 @@ int main(int argc, char ** argv){
 
     Matrix matrix = fileGetMatrix(argc, argv);
 
-    int dist = bioinsp(matrix, 20, 5);
+    int dist = bioinsp(matrix, 5, 5);
     printf("%d", dist);
 
     deleteMatrix(&matrix);
