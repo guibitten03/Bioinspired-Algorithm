@@ -6,6 +6,6 @@
 
 Individuo evaluation(Population* population);
 void routeCalculate(Individuo* individuo, Matrix matrix);
-Individuo* selection(Population population);
+Individuo selection(Population population);
 
 #endif

@@ -20,7 +20,7 @@ int bioinsp(Matrix matrix, int populationSz, int plato){
             pastBestDist = population.bestIndividuo.dist; 
         }
 
-        crossover(&population);
+        crossover(&population, population.bestIndividuo);
 
     }while(stop > plato);
 
@@ -78,15 +78,15 @@ Individuo createIndividuo(int individuoSz){
     return individuo;
 }
 
-void crossover(Population* population){
-    /*
-    bool par = population->populationSz % 2 == 0;
-    for(int i = 0; i < (population->populationSz+1); i++){
-        if(bool){
-            printf("d");
+void crossover(Population* population, Individuo bestIndividuo){
+    for(int i = 0; i < population->populationSz; i++){
+        if(i == 0){
+            population->population[i] = bestIndividuo;
+            continue;
         }
+
+        population->population[i] = selection(population, i);
     }
-    */
 }
 
 void Mutation(Individuo* individuo, int mutationP){
