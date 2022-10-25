@@ -23,18 +23,18 @@ Individuo evaluation(Population * population){
     return population->bestIndividuo;
 }
 
-Individuo selection(Population population, int i){
-    // srand(time(NULL)+seed);
-    // seed--;
-    // int firstRPosition = rand() % population.populationSz;
-    // srand(time(NULL)+seed);
-    // seed--;
-    // int secondRPosition = rand() % population.populationSz;
+Individuo selection(Population * population){
+    srand(time(NULL)+seed);
+    seed--;
+    int firstRPosition = rand() % population->populationSz;
+    srand(time(NULL)+seed);
+    seed--;
+    int secondRPosition = rand() % population->populationSz;
 
-    if(population.population[i].dist <= population.population[i + 1].dist){
-        return population.population[i];
+    if(population->population[firstRPosition].dist <= population->population[secondRPosition].dist){
+        return population->population[firstRPosition];
     }else{
-        return population.population[i + 1];
+        return population->population[secondRPosition];
     }
 
 }

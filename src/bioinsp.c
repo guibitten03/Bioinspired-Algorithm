@@ -20,7 +20,7 @@ int bioinsp(Matrix matrix, int populationSz, int plato){
             pastBestDist = population.bestIndividuo.dist; 
         }
 
-        crossover(&population, population.bestIndividuo);
+        darwinism(&population);
 
     }while(stop > plato);
 
@@ -76,15 +76,36 @@ Individuo createIndividuo(int individuoSz){
     return individuo;
 }
 
-void crossover(Population* population, Individuo bestIndividuo){
-    for(int i = 0; i < population->populationSz; i++){
-        if(i == 0){
-            population->population[i] = bestIndividuo;
-            continue;
-        }
+Individuo crossingIndividuos(Population * pop, Individuo father, Individuo mother, int vLen){
+    Individuo child_1 = createIndividuo(vLen);
+    Individuo child_2 = createIndividuo(vLen);
 
-        population->population[i] = selection(population, i);
+    int strip = (int)vLen / 3;
+    for(int trait = 0; trait < strip; trait++){
+        child_1.traits[strip + trait] = mother.traits[strip + trait];
+        child_2.traits[strip + trait] = father.traits[strip + trait];
     }
+
+    
+}
+
+void darwinism(Population * population){
+    Population newPopulation = createPopulation(population->matrix, population->populationSz);
+
+    for(int i = 0; i < population->populationSz; i++){
+        newPopulation.population[i] = selection(population);
+    }
+
+    for(int i = 0; i < population->populationSz; (i+2)){
+        newPopulation.population[i] = crossover(population->population[i], population->population[i+1]);
+        newPopulation.population[i + 1] = crossover(population->population[i], population->population[i+1]);
+    }
+
+}
+
+Individuo crossover(Individuo father, Individuo mother){
+    
+
 }
 
 void Mutation(Individuo* individuo, int mutationP){
