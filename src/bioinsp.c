@@ -1,5 +1,5 @@
 #include <stdbool.h>
-
+#include "evaluation.h"
 #include "bioinsp.h"
 
 #define INFINITO 100000000
@@ -38,10 +38,7 @@ Population createPopulation(Matrix matrix, int populationSz){
 
     for(int c=0; c<populationSz; c++){
         population.population[c] = createIndividuo(population.matrix.len);
-        for(int i=0; i<population.matrix.len; i++){
-            printf("%d ", population.population[c].traits[i]);
-        }
-        printf("\n");
+
     }
 
 
@@ -54,6 +51,7 @@ Individuo createIndividuo(int individuoSz){
     Individuo individuo;
     individuo.dist = INFINITO;
     individuo.traits = (int*)malloc(individuoSz*sizeof(int));
+    individuo.traitsSz = individuoSz;
 
     srand(time(NULL)+seed);
     seed++;
@@ -93,7 +91,7 @@ void Mutation(Individuo* individuo, int mutationP){
     int random1, random2, aux;
     
     srand(time(NULL)+seed);
-    seed--;
+    seed++;
     for(int c=0; c<individuo->traitsSz; c++){
         random1 = (rand()%100);
 
