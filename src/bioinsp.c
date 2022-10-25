@@ -38,6 +38,10 @@ Population createPopulation(Matrix matrix, int populationSz){
 
     for(int c=0; c<populationSz; c++){
         population.population[c] = createIndividuo(population.matrix.len);
+        for(int i=0; i<population.matrix.len; i++){
+            printf("%d ", population.population[c].traits[i]);
+        }
+        printf("\n");
     }
 
 
@@ -52,24 +56,53 @@ Individuo createIndividuo(int individuoSz){
     individuo.traits = (int*)malloc(individuoSz*sizeof(int));
 
     srand(time(NULL)+seed);
+    seed++;
     for(int c=0; c<individuoSz; c++){
         random = rand()  % individuoSz;
         
-        while (/* condition */)
-        {
-            /* code */
+        modifi = 1;
+        while (modifi){
+            modifi = 0;
+            for(int i=0; i<c; i++){
+                if(individuo.traits[i]==random){
+                    modifi = 1;
+                    random = rand()  % individuoSz;
+                    break;
+                }
+            }
+            
         }
-        
+        individuo.traits[c] = random;
     }
 
     return individuo;
 }
 
 void crossover(Population* population){
+    /*
     bool par = population->populationSz % 2 == 0;
     for(int i = 0; i < (population->populationSz+1); i++){
         if(bool){
-            
+            printf("d");
+        }
+    }
+    */
+}
+
+void Mutation(Individuo* individuo, int mutationP){
+    int random1, random2, aux;
+    
+    srand(time(NULL)+seed);
+    seed--;
+    for(int c=0; c<individuo->traitsSz; c++){
+        random1 = (rand()%100);
+
+        if(random1<=mutationP){
+            random2 = rand() % individuo->traitsSz;
+
+            aux = individuo->traits[c];
+            individuo->traits[c] = individuo->traits[random2];
+            individuo->traits[random2] = aux;
         }
     }
 }

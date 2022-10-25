@@ -8,6 +8,9 @@
 #include "in_out.h"
 #include "evaluation.h"
 
+typedef struct individuo_t Individuo;
+typedef struct population_t Population;
+
 struct individuo_t{
     int traitsSz;
     int * traits;
@@ -21,13 +24,10 @@ struct population_t{
     Individuo bestIndividuo;
 };
 
-typedef struct individuo_t Individuo;
-typedef struct population_t Population;
-
 Population createPopulation(Matrix matrix, int populationSz);
 Individuo createIndividuo(int individuoSz);
 void crossover(Population* population);
-void Mutation(Individuo* individuo);
+void Mutation(Individuo* individuo, int mutationP);
 int bioinsp(Matrix matrix, int populationSz, int plato);
 
 #endif
