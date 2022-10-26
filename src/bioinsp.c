@@ -4,6 +4,9 @@
 
 #define INFINITO 100000000
 
+#define PUTON 1
+#define NPUTON 0
+
 int seed = 0;
 
 int bioinsp(Matrix matrix, int populationSz, int plato){
@@ -76,38 +79,6 @@ Individuo createIndividuo(int individuoSz){
     return individuo;
 }
 
-Individuo crossingIndividuos(Population * pop, Individuo father, Individuo mother, int vLen){
-    Individuo child_1 = createIndividuo(vLen);
-    Individuo child_2 = createIndividuo(vLen);
-
-    int strip = (int)vLen / 3;
-    for(int trait = 0; trait < strip; trait++){
-        child_1.traits[strip + trait] = mother.traits[strip + trait];
-        child_2.traits[strip + trait] = father.traits[strip + trait];
-    }
-
-    
-}
-
-void darwinism(Population * population){
-    Population newPopulation = createPopulation(population->matrix, population->populationSz);
-
-    for(int i = 0; i < population->populationSz; i++){
-        newPopulation.population[i] = selection(population);
-    }
-
-    for(int i = 0; i < population->populationSz; (i+2)){
-        newPopulation.population[i] = crossover(population->population[i], population->population[i+1]);
-        newPopulation.population[i + 1] = crossover(population->population[i], population->population[i+1]);
-    }
-
-}
-
-Individuo crossover(Individuo father, Individuo mother){
-    
-
-}
-
 void Mutation(Individuo* individuo, int mutationP){
     int random1, random2, aux;
     
@@ -124,4 +95,66 @@ void Mutation(Individuo* individuo, int mutationP){
             individuo->traits[random2] = aux;
         }
     }
+}
+
+void copy_strip(Individuo * child, Individuo * parent, int position){
+    switch(position){
+        case 0: 
+    }
+}
+
+Individuo crossover(Individuo father, Individuo mother, int order){
+    int traits = father.traitsSz;
+    strip = (int)traits / 3;
+
+    Individuo child = createIndividuo(traits);
+
+    if(order == 0){
+        int parent_traits = [traits];
+        int strip_parent = [strip];
+
+        for(int i = 0; i < traits; i++){
+            parent_traits[i] = mother.traits[(i+(strip-1)) % traits];
+        }
+
+        for(int i = 0; i < strip; i++){ // Get main strip from parent
+            strip_parent[i] = father.traits[i + strip];
+        }
+
+        // Get element from parent and verify if there is in strip
+        // If there is, jump. Else, put in vector
+        // 
+        int count = 0;
+        int i = 0;
+        int control = PUTON;
+        while(count < strip){
+            for(int j = 0; j < strip; j++){
+                if(parent_traits[i] == strip_parent[j]){
+                    control = NPUTON;
+                    break;
+                }
+            }
+
+            if(control){
+                child.traits[count] = parent_traits[i];
+                count++;
+            }
+            i++;
+        }
+    }
+
+}
+
+void darwinism(Population * population){
+    Population newPopulation = createPopulation(population->matrix, population->populationSz);
+
+    for(int i = 0; i < population->populationSz; i++){
+        newPopulation.population[i] = selection(population);
+    }
+
+    for(int i = 0; i < population->populationSz; (i+2)){
+        newPopulation.population[i] = crossover(population->population[i], population->population[i+1], 0);
+        newPopulation.population[i + 1] = crossover(population->population[i], population->population[i+1], 1);
+    }
+
 }
