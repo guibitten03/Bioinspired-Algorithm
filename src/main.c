@@ -9,7 +9,7 @@ int main(int argc, char ** argv){
     Matrix matrix = fileGetMatrix(argc, argv);
 
     int dist = bioinsp(matrix, 5, 5);
-    printf("%d", dist);
+    printf("%d\n", dist);
 
     deleteMatrix(&matrix);
 

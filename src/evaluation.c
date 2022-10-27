@@ -1,16 +1,21 @@
 #include "evaluation.h"
 
 void routeCalculate(Individuo * individuo, Matrix matrix){
-    for(int i = 0; i < (matrix.len + 1); i++){
-        if (i == matrix.len){
-            individuo->dist += matrix.matrix[individuo->traits[i-1]][0];
+    for(int i = 0; i < matrix.len; i++){
+        if (i == (matrix.len - 1)){
+            individuo->dist += matrix.matrix[individuo->traits[i]][individuo->traits[0]];
+            break;
         }
         individuo->dist += matrix.matrix[individuo->traits[i]][individuo->traits[i+1]];
     }
 }
 
-Individuo evaluation(Population * population){
-    printf("Evaluation individuos...");
+void evaluation(Population * population){
+
+    #ifdef printSteps
+    printf("Evaluation individuos...\n");
+    #endif
+
     for(int i = 0; i < population->populationSz; i++){
         routeCalculate(&population->population[i], population->matrix);
         
@@ -18,8 +23,6 @@ Individuo evaluation(Population * population){
             population->bestIndividuo = population->population[i];
         }
     }
-
-    return population->bestIndividuo;
 }
 
 Individuo selection(Population * population, int seed){

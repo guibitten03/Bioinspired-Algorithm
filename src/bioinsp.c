@@ -3,6 +3,7 @@
 #include "bioinsp.h"
 
 #define INFINITO 100000000
+#define printSteps
 
 #define PUTON 1
 #define NPUTON 0
@@ -12,15 +13,22 @@ int seed = 0;
 void crossing_parse(Individuo * child, Individuo firstParent, Individuo secondParent);
 
 int bioinsp(Matrix matrix, int populationSz, int plato){
+
+    #ifdef printSteps
     printf("Population is beeing created...\n");
+    #endif
+
     int stop = 0;
     int pastBestDist = INFINITO;
     Population population = createPopulation(matrix, populationSz);
 
     int generation = 1;
     do{
-        printf("Generation %d in process...", generation);
-        population.bestIndividuo = evaluation(&population);
+        #ifdef printSteps
+        printf("Generation %d in process...\n", generation);
+        #endif
+
+        evaluation(&population);
 
         if(population.bestIndividuo.dist == pastBestDist){stop++;}
         else{
@@ -28,11 +36,14 @@ int bioinsp(Matrix matrix, int populationSz, int plato){
             pastBestDist = population.bestIndividuo.dist; 
         }
 
-        printf("Applying darwinism...");
-        population = darwinism(&population);
+        #ifdef printSteps
+        printf("Applying darwinism...\n");
+        #endif
+
+        darwinism(&population);
 
         generation++;
-    }while(stop > plato);
+    }while(stop < plato);
 
     return population.bestIndividuo.dist;
 }
@@ -158,27 +169,42 @@ Individuo crossover(Individuo father, Individuo mother, int order){
     return child;
 }
 
-Population darwinism(Population * population){
+void darwinism(Population * population){
     Population newPopulation = createPopulation(population->matrix, population->populationSz);
 
-    printf("Selecting best individuals...");
+    
+    #ifdef printSteps
+    printf("Selecting best individuals...\n");
+    #endif
+
     for(int i = 0; i < population->populationSz; i++){
         newPopulation.population[i] = selection(population, seed);
     }
 
-    printf("Doing the crossover...");
-    for(int i = 0; i < population->populationSz; (i+2)){
-        newPopulation.population[i] = crossover(population->population[i], population->population[i+1], 0);
-        newPopulation.population[i + 1] = crossover(population->population[i], population->population[i+1], 1);
+    #ifdef printSteps
+    printf("Doing the crossover...\n");
+    #endif
+
+    for(int i = 0; i < population->populationSz; i+=2){
+        if(i == (population->populationSz - 1)){
+            newPopulation.population[i] = crossover(population->population[i], population->population[0], 0);
+            break;
+        }else{
+            newPopulation.population[i] = crossover(population->population[i], population->population[i+1], 0);
+            newPopulation.population[i + 1] = crossover(population->population[i], population->population[i+1], 1);
+        }
+
     }
 
-    printf("Mute individuals...");
+    #ifdef printSteps
+    printf("Mute individuals...\n");
+    #endif
+
     for(int i = 0; i < population->populationSz; i++){
         mutation(&population->population[i], 0.2);
     }
 
     newPopulation.population[0] = population->bestIndividuo;
-
-    return newPopulation;
-
+    
+    *population = newPopulation;
 }
