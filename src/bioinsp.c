@@ -50,11 +50,7 @@ int bioinsp(Matrix matrix, int populationSz, int plato){
 
 Population createPopulation(Matrix matrix, int populationSz){
     Population population;
- for(int i = 0; i < traits; i++){
-        if(child->traits[i] > 14){
-            printf("Sim\n");
-        }
-    }
+    
     population.matrix = matrix;
     population.populationSz = populationSz;
     population.bestIndividuo.dist = INFINITO;
