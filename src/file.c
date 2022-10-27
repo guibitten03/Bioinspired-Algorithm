@@ -1,4 +1,4 @@
-#include "in_out.h"
+#include "file.h"
 
 #define BUFFER_LEN 500
 
@@ -27,6 +27,7 @@ void deleteMatrix(Matrix * matrix){
 }
 
 Matrix fileGetMatrix(int argc, char ** argv){
+    printf("Getting Matrix...");
     args arguments;
     Matrix matrix;
     FILE * inputFile;

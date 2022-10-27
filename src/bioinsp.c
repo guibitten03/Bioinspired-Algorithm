@@ -9,12 +9,17 @@
 
 int seed = 0;
 
+void crossing_parse(Individuo * child, Individuo firstParent, Individuo secondParent);
+
 int bioinsp(Matrix matrix, int populationSz, int plato){
+    printf("Population is beeing created...");
     int stop = 0;
     int pastBestDist = INFINITO;
     Population population = createPopulation(matrix, populationSz);
 
+    int generation = 1;
     do{
+        printf("Generation %d in process...", generation);
         population.bestIndividuo = evaluation(&population);
 
         if(population.bestIndividuo.dist == pastBestDist){stop++;}
@@ -23,8 +28,10 @@ int bioinsp(Matrix matrix, int populationSz, int plato){
             pastBestDist = population.bestIndividuo.dist; 
         }
 
-        darwinism(&population);
+        printf("Applying darwinism...");
+        population = darwinism(&population);
 
+        generation++;
     }while(stop > plato);
 
     return population.bestIndividuo.dist;
@@ -79,7 +86,7 @@ Individuo createIndividuo(int individuoSz){
     return individuo;
 }
 
-void Mutation(Individuo* individuo, int mutationP){
+void mutation(Individuo * individuo, int mutationP){
     int random1, random2, aux;
     
     srand(time(NULL)+seed);
@@ -97,64 +104,82 @@ void Mutation(Individuo* individuo, int mutationP){
     }
 }
 
-void copy_strip(Individuo * child, Individuo * parent, int position){
-    switch(position){
-        case 0: 
+void crossing_parse(Individuo * child, Individuo firstParent, Individuo secondParent){
+    int traits = firstParent.traitsSz;
+    int strip = (int)traits / 3;
+
+    int parent_traits[traits];
+    int strip_parent[strip];
+
+    for(int i = 0; i < traits; i++){
+        parent_traits[i] = firstParent.traits[(i+(strip-1)) % traits];
+    }
+
+    for(int i = 0; i < strip; i++){ 
+        strip_parent[i] = secondParent.traits[i + strip];
+    }
+
+    int count = 0;
+    int i = 0;
+    int control = PUTON;
+    while(count < traits){
+        for(int j = 0; j < strip; j++){
+            if(parent_traits[i] == strip_parent[j]){
+                control = NPUTON;
+                break;
+            }
+        }
+
+        if(control){
+            child->traits[count] = parent_traits[i];
+            count++;
+        }
+
+        if(count == strip){
+            for(int j = 0; j < strip; j++){
+                child->traits[j + strip] = strip_parent[j];
+                count++;
+            }
+            count++;
+        }
+        i++;
+        control = PUTON;
     }
 }
 
 Individuo crossover(Individuo father, Individuo mother, int order){
-    int traits = father.traitsSz;
-    strip = (int)traits / 3;
-
-    Individuo child = createIndividuo(traits);
+    Individuo child = createIndividuo(father.traitsSz);
 
     if(order == 0){
-        int parent_traits = [traits];
-        int strip_parent = [strip];
-
-        for(int i = 0; i < traits; i++){
-            parent_traits[i] = mother.traits[(i+(strip-1)) % traits];
-        }
-
-        for(int i = 0; i < strip; i++){ // Get main strip from parent
-            strip_parent[i] = father.traits[i + strip];
-        }
-
-        // Get element from parent and verify if there is in strip
-        // If there is, jump. Else, put in vector
-        // 
-        int count = 0;
-        int i = 0;
-        int control = PUTON;
-        while(count < strip){
-            for(int j = 0; j < strip; j++){
-                if(parent_traits[i] == strip_parent[j]){
-                    control = NPUTON;
-                    break;
-                }
-            }
-
-            if(control){
-                child.traits[count] = parent_traits[i];
-                count++;
-            }
-            i++;
-        }
+        crossing_parse(&child, father, mother);
+    }else{
+        crossing_parse(&child, mother, father);
     }
 
+    return child;
 }
 
-void darwinism(Population * population){
+Population darwinism(Population * population){
     Population newPopulation = createPopulation(population->matrix, population->populationSz);
 
+    printf("Selecting best individuals...");
     for(int i = 0; i < population->populationSz; i++){
-        newPopulation.population[i] = selection(population);
+        newPopulation.population[i] = selection(population, seed);
     }
 
+    printf("Doing the crossover...");
     for(int i = 0; i < population->populationSz; (i+2)){
         newPopulation.population[i] = crossover(population->population[i], population->population[i+1], 0);
         newPopulation.population[i + 1] = crossover(population->population[i], population->population[i+1], 1);
     }
+
+    printf("Mute individuals...");
+    for(int i = 0; i < population->populationSz; i++){
+        mutation(&population->population[i], 0.2);
+    }
+
+    newPopulation.population[0] = population->bestIndividuo;
+
+    return newPopulation;
 
 }

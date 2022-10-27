@@ -1,7 +1,5 @@
 #include "evaluation.h"
 
-int seed = 0;
-
 void routeCalculate(Individuo * individuo, Matrix matrix){
     for(int i = 0; i < (matrix.len + 1); i++){
         if (i == matrix.len){
@@ -12,6 +10,7 @@ void routeCalculate(Individuo * individuo, Matrix matrix){
 }
 
 Individuo evaluation(Population * population){
+    printf("Evaluation individuos...");
     for(int i = 0; i < population->populationSz; i++){
         routeCalculate(&population->population[i], population->matrix);
         
@@ -23,7 +22,7 @@ Individuo evaluation(Population * population){
     return population->bestIndividuo;
 }
 
-Individuo selection(Population * population){
+Individuo selection(Population * population, int seed){
     srand(time(NULL)+seed);
     seed--;
     int firstRPosition = rand() % population->populationSz;
