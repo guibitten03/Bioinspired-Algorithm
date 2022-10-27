@@ -30,7 +30,7 @@ int bioinsp(Matrix matrix, int populationSz, int plato){
 
         evaluation(&population);
 
-        if(population.bestIndividuo.dist == pastBestDist){stop++;}
+        if(population.bestIndividuo.dist == pastBestDist){ stop++; }
         else{
             stop = 0;
             pastBestDist = population.bestIndividuo.dist; 
@@ -50,7 +50,11 @@ int bioinsp(Matrix matrix, int populationSz, int plato){
 
 Population createPopulation(Matrix matrix, int populationSz){
     Population population;
-
+ for(int i = 0; i < traits; i++){
+        if(child->traits[i] > 14){
+            printf("Sim\n");
+        }
+    }
     population.matrix = matrix;
     population.populationSz = populationSz;
     population.bestIndividuo.dist = INFINITO;
@@ -115,14 +119,14 @@ void mutation(Individuo * individuo, int mutationP){
 }
 
 void crossing_parse(Individuo * child, Individuo firstParent, Individuo secondParent){
-    int traits = firstParent.traitsSz;
-    int strip = (int)traits / 3;
+    int traits = firstParent.traitsSz; // Get size of traits
+    int strip = (int)traits / 3; // Get strip os traits
 
     int parent_traits[traits];
     int strip_parent[strip];
 
     for(int i = 0; i < traits; i++){
-        parent_traits[i] = firstParent.traits[(i+(strip-1)) % traits];
+        parent_traits[i] = firstParent.traits[(i + strip - 1) % traits];
     }
 
     for(int i = 0; i < strip; i++){ 
@@ -205,6 +209,6 @@ void darwinism(Population * population){
     }
 
     newPopulation.population[0] = population->bestIndividuo;
-    
+
     *population = newPopulation;
 }
