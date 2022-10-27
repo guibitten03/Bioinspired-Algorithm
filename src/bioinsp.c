@@ -12,7 +12,7 @@ int seed = 0;
 void crossing_parse(Individuo * child, Individuo firstParent, Individuo secondParent);
 
 int bioinsp(Matrix matrix, int populationSz, int plato){
-    printf("Population is beeing created...");
+    printf("Population is beeing created...\n");
     int stop = 0;
     int pastBestDist = INFINITO;
     Population population = createPopulation(matrix, populationSz);
@@ -46,11 +46,10 @@ Population createPopulation(Matrix matrix, int populationSz){
     population.bestIndividuo.traits = NULL;
     population.population = (Individuo*)malloc(populationSz*sizeof(Individuo));
 
-    for(int c=0; c<populationSz; c++){
+    for(int c = 0; c < populationSz; c++){
         population.population[c] = createIndividuo(population.matrix.len);
 
     }
-
 
     return population;
 }

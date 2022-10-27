@@ -27,7 +27,7 @@ void deleteMatrix(Matrix * matrix){
 }
 
 Matrix fileGetMatrix(int argc, char ** argv){
-    printf("Getting Matrix...");
+    printf("Getting Matrix...\n");
     args arguments;
     Matrix matrix;
     FILE * inputFile;

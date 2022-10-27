@@ -24,11 +24,11 @@ struct population_t{
     Individuo bestIndividuo;
 };
 
+int bioinsp(Matrix matrix, int populationSz, int plato);
 Population createPopulation(Matrix matrix, int populationSz);
 Individuo createIndividuo(int individuoSz);
 Population darwinism(Population * population);
 Individuo crossover(Individuo father, Individuo mother, int order);
 void mutation(Individuo* individuo, int mutationP);
-int bioinsp(Matrix matrix, int populationSz, int plato);
 
 #endif
