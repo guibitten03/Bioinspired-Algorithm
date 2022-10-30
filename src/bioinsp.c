@@ -54,7 +54,6 @@ Population createPopulation(Matrix matrix, int populationSz){
     population.matrix = matrix;
     population.populationSz = populationSz;
 
-    population.bestIndividuo = createIndividuo(population.matrix.len);
     population.bestIndividuo.dist = INFINITO;
     population.bestIndividuo.traits = NULL;
     population.population = (Individuo*)malloc(populationSz*sizeof(Individuo));
