@@ -10,7 +10,7 @@
 
 int seed = 0;
 
-void crossing_parse(Individuo * child, Individuo firstParent, Individuo secondParent);
+Individuo crossing_parse(Individuo firstParent, Individuo secondParent);
 
 int bioinsp(Matrix matrix, int populationSz, int plato){
 
@@ -53,6 +53,8 @@ Population createPopulation(Matrix matrix, int populationSz){
     
     population.matrix = matrix;
     population.populationSz = populationSz;
+
+    population.bestIndividuo = createIndividuo(population.matrix.len);
     population.bestIndividuo.dist = INFINITO;
     population.bestIndividuo.traits = NULL;
     population.population = (Individuo*)malloc(populationSz*sizeof(Individuo));
@@ -127,9 +129,11 @@ void mutation(Individuo * individuo, int mutationP){
     }
 }
 
-void crossing_parse(Individuo * child, Individuo firstParent, Individuo secondParent){
-    int traits = firstParent.traitsSz; // Get size of traits
-    int strip = (int)traits / 3; // Get strip os traits
+Individuo crossing_parse(Individuo firstParent, Individuo secondParent){
+    int traits = firstParent.traitsSz;
+    int strip = (int)traits / 3;
+    Individuo child = createIndividuo(traits);
+
 
     int parent_traits[traits];
     int strip_parent[strip];
@@ -154,31 +158,29 @@ void crossing_parse(Individuo * child, Individuo firstParent, Individuo secondPa
         }
 
         if(control){
-            child->traits[count] = parent_traits[i];
+            child.traits[count] = parent_traits[i];
             count++;
         }
 
         if(count == strip){
             for(int j = 0; j < strip; j++){
-                child->traits[j + strip] = strip_parent[j];
+                child.traits[j + strip] = strip_parent[j];
                 count++;
             }
         }
         i++;
         control = PUT_ON;
     }
+
+    return child;
 }
 
 Individuo crossover(Individuo father, Individuo mother, int order){
-    Individuo child = createIndividuo(father.traitsSz);
-
     if(order == 0){
-        crossing_parse(&child, father, mother);
+        return crossing_parse(father, mother);
     }else{
-        crossing_parse(&child, mother, father);
+        return crossing_parse(mother, father);
     }
-
-    return child;
 }
 
 void darwinism(Population * population){
@@ -218,7 +220,7 @@ void darwinism(Population * population){
 
     newPopulation.population[0] = population->bestIndividuo;
 
-    destroyPopulation(population);
+    // destroyPopulation(population);
 
     population = &newPopulation;
 }
