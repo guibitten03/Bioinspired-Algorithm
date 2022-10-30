@@ -5,8 +5,8 @@
 #define INFINITO 100000000
 #define printSteps
 
-#define PUTON 1
-#define NPUTON 0
+#define PUT_ON 1
+#define N_PUT_ON 0
 
 int seed = 0;
 
@@ -65,6 +65,7 @@ Population createPopulation(Matrix matrix, int populationSz){
     return population;
 }
 
+
 Individuo createIndividuo(int individuoSz){
     int random, modifi;
 
@@ -94,6 +95,18 @@ Individuo createIndividuo(int individuoSz){
     }
 
     return individuo;
+}
+
+void destroyIndividuo(Individuo * i){
+    free(i->traits);
+}
+
+void destroyPopulation(Population * pop){
+    for(int i = 0; i < pop->populationSz; i++){
+        destroyIndividuo(&pop->population[i]);
+    }
+
+    free(pop->population);
 }
 
 void mutation(Individuo * individuo, int mutationP){
@@ -131,11 +144,11 @@ void crossing_parse(Individuo * child, Individuo firstParent, Individuo secondPa
 
     int count = 0;
     int i = 0;
-    int control = PUTON;
+    int control = PUT_ON;
     while(count < traits){
         for(int j = 0; j < strip; j++){
             if(parent_traits[i] == strip_parent[j]){
-                control = NPUTON;
+                control = N_PUT_ON;
                 break;
             }
         }
@@ -150,10 +163,9 @@ void crossing_parse(Individuo * child, Individuo firstParent, Individuo secondPa
                 child->traits[j + strip] = strip_parent[j];
                 count++;
             }
-            count++;
         }
         i++;
-        control = PUTON;
+        control = PUT_ON;
     }
 }
 
@@ -177,7 +189,7 @@ void darwinism(Population * population){
     printf("Selecting best individuals...\n");
     #endif
 
-    for(int i = 0; i < population->populationSz; i++){
+    for(int i = 0; i < newPopulation.populationSz; i++){
         newPopulation.population[i] = selection(population, seed);
     }
 
@@ -201,10 +213,12 @@ void darwinism(Population * population){
     #endif
 
     for(int i = 0; i < population->populationSz; i++){
-        mutation(&population->population[i], 0.2);
+        mutation(&newPopulation.population[i], 0.2);
     }
 
     newPopulation.population[0] = population->bestIndividuo;
 
-    *population = newPopulation;
+    destroyPopulation(population);
+
+    population = &newPopulation;
 }

@@ -31,4 +31,7 @@ void darwinism(Population * population);
 Individuo crossover(Individuo father, Individuo mother, int order);
 void mutation(Individuo* individuo, int mutationP);
 
+void destroyIndividuo(Individuo * i);
+void destroyPopulation(Population * pop);
+
 #endif

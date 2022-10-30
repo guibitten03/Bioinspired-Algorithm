@@ -5,7 +5,7 @@
 #include "bioinsp.h"
 
 void evaluation(Population * population);
-void routeCalculate(Individuo * individuo, Matrix matrix);
+int routeCalculate(Individuo individuo, Matrix matrix);
 Individuo selection(Population * population, int seed);
 
 #endif

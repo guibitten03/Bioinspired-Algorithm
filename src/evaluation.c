@@ -1,20 +1,17 @@
 #include "evaluation.h"
 
-void routeCalculate(Individuo * individuo, Matrix matrix){
-    individuo->dist = 0;
+int routeCalculate(Individuo individuo, Matrix matrix){
+    int dist = 0;
     for(int i = 0; i < matrix.len; i++){
-        printf("%d\n", i);
         if (i == (matrix.len - 1)){
-            individuo->dist += matrix.matrix[individuo->traits[i]][individuo->traits[0]];
-            printf("%d %d", individuo->traits[i], individuo->traits[0]);
+            dist += matrix.matrix[individuo.traits[i]][individuo.traits[0]];
 
             break;
         }
-        printf("%d %d", individuo->traits[i], individuo->traits[i+1]);
-        printf("%d\n", matrix.matrix[individuo->traits[i]][individuo->traits[i+1]]);
-        individuo->dist += matrix.matrix[individuo->traits[i]][individuo->traits[i+1]];
+        dist += matrix.matrix[individuo.traits[i]][individuo.traits[i+1]];
     }
-    printf("d: %d\n", individuo->dist);
+
+    return dist;
 }
 
 void evaluation(Population * population){
@@ -24,7 +21,7 @@ void evaluation(Population * population){
     #endif
 
     for(int i = 0; i < population->populationSz; i++){
-        routeCalculate(&population->population[i], population->matrix);
+        population->population[i].dist = routeCalculate(population->population[i], population->matrix);
         
         if(population->population[i].dist < population->bestIndividuo.dist){
             population->bestIndividuo = population->population[i];
