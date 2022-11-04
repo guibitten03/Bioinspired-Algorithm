@@ -2,8 +2,8 @@
 #include "evaluation.h"
 #include "bioinsp.h"
 
-#define INFINITO 100000000
-#define printSteps
+#define INFINITO 10000000
+//#define printSteps
 
 #define PUT_ON 1
 #define N_PUT_ON 0
@@ -21,8 +21,8 @@ int bioinsp(Matrix matrix, int populationSz, int plato){
     int stop = 0;
     int pastBestDist = INFINITO;
     Population population = createPopulation(matrix, populationSz);
-
     int generation = 1;
+
     do{
         #ifdef printSteps
         printf("Generation %d in process...\n", generation);
@@ -36,14 +36,19 @@ int bioinsp(Matrix matrix, int populationSz, int plato){
             pastBestDist = population.bestIndividuo.dist; 
         }
 
+        printf("%d\n", population.bestIndividuo.dist);
+
         #ifdef printSteps
         printf("Applying darwinism...\n");
         #endif
 
-        darwinism(&population);
+        darwinism(&population, 20);
 
         generation++;
+    //}while(0);
     }while(stop < plato);
+
+    destroyPopulation(&population);
 
     return population.bestIndividuo.dist;
 }
@@ -55,7 +60,8 @@ Population createPopulation(Matrix matrix, int populationSz){
     population.populationSz = populationSz;
 
     population.bestIndividuo.dist = INFINITO;
-    population.bestIndividuo.traits = NULL;
+    population.bestIndividuo.traits = (int*)malloc(population.matrix.len*sizeof(int));
+    population.bestIndividuo.traitsSz = population.matrix.len;
     population.population = (Individuo*)malloc(populationSz*sizeof(Individuo));
 
     for(int c = 0; c < populationSz; c++){
@@ -65,7 +71,6 @@ Population createPopulation(Matrix matrix, int populationSz){
 
     return population;
 }
-
 
 Individuo createIndividuo(int individuoSz){
     int random, modifi;
@@ -106,7 +111,7 @@ void destroyPopulation(Population * pop){
     for(int i = 0; i < pop->populationSz; i++){
         destroyIndividuo(&pop->population[i]);
     }
-
+    destroyIndividuo(&pop->bestIndividuo);
     free(pop->population);
 }
 
@@ -182,16 +187,18 @@ Individuo crossover(Individuo father, Individuo mother, int order){
     }
 }
 
-void darwinism(Population * population){
-    Population newPopulation = createPopulation(population->matrix, population->populationSz);
+void darwinism(Population * population, int mutationP){
+    Individuo newPopulation[population->populationSz];
 
-    
     #ifdef printSteps
     printf("Selecting best individuals...\n");
     #endif
 
-    for(int i = 0; i < newPopulation.populationSz; i++){
-        newPopulation.population[i] = selection(population, seed);
+    for(int i = 0; i < population->populationSz; i++){
+        newPopulation->traitsSz = population->matrix.len;
+        newPopulation[i].traits = NULL;
+        //newPopulation[i] = selection(population, seed);
+        newPopulation[i] = selection_in_4(population, seed);
     }
 
     #ifdef printSteps
@@ -200,11 +207,11 @@ void darwinism(Population * population){
 
     for(int i = 0; i < population->populationSz; i+=2){
         if(i == (population->populationSz - 1)){
-            newPopulation.population[i] = crossover(population->population[i], population->population[0], 0);
+            newPopulation[i] = crossover(population->population[i], population->population[0], 0);
             break;
         }else{
-            newPopulation.population[i] = crossover(population->population[i], population->population[i+1], 0);
-            newPopulation.population[i + 1] = crossover(population->population[i], population->population[i+1], 1);
+            newPopulation[i] = crossover(population->population[i], population->population[i+1], 0);
+            newPopulation[i + 1] = crossover(population->population[i], population->population[i+1], 1);
         }
 
     }
@@ -214,12 +221,22 @@ void darwinism(Population * population){
     #endif
 
     for(int i = 0; i < population->populationSz; i++){
-        mutation(&newPopulation.population[i], 0.2);
+        mutation(&newPopulation[i], mutationP);
     }
 
-    newPopulation.population[0] = population->bestIndividuo;
+    for(int c=0; c < population->populationSz; c++){
+        
+        for(int i=0; i<population->population[c].traitsSz; i++){
+            population->population[c].traits[i] = newPopulation[c].traits[i];
+        }
 
-    // destroyPopulation(population);
+        free(newPopulation[c].traits);    
+        
+    }
 
-    population = &newPopulation;
+    for(int c=0; c<population->bestIndividuo.traitsSz; c++){
+        population->population[population->populationSz -1].traits[c] = population->bestIndividuo.traits[c];
+    }
+    population->population[population->populationSz -1].dist = population->bestIndividuo.dist;
+
 }

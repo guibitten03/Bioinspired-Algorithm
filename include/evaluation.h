@@ -7,5 +7,6 @@
 void evaluation(Population * population);
 int routeCalculate(Individuo individuo, Matrix matrix);
 Individuo selection(Population * population, int seed);
+Individuo selection_in_4(Population * population, int seed);
 
 #endif

@@ -1,6 +1,6 @@
 #include "file.h"
 
-#define BUFFER_LEN 500
+#define BUFFER_LEN 5000
 
 void argsParse(Args a, int argc, char ** argv){
     if (argc < 3){
@@ -67,7 +67,8 @@ Matrix createMatrix(FILE * inputFile, int matrixSize){
     
     matrix.matrix = (int**)malloc(matrixSize*sizeof(int**));
     for(int c=0; c<matrixSize; c++){
-        matrix.matrix[c] = (int*)malloc(matrixSize*sizeof(int*));
+        matrix.matrix[c] = (int*)malloc(matrixSize*sizeof(int));
+        //matrix.matrix[c] = (int*)malloc(matrixSize*sizeof(int*));
     }
 
     matrix.len = matrixSize;
@@ -89,7 +90,6 @@ Matrix createMatrix(FILE * inputFile, int matrixSize){
             aux = strtok(NULL, delimit);
             y++;
         }
-        
         x++;
     }
 
