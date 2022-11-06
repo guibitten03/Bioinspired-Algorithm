@@ -29,9 +29,8 @@ void evaluation(Population * population){
     }
 }
 
-Individuo selection(Population * population, int seed){
-    srand(time(NULL)+seed);
-    seed--;
+Individuo selection(Population * population){
+    srand(microseg());
     int firstRPosition = rand() % population->populationSz;
     int secondRPosition = rand() % population->populationSz;
 
@@ -43,9 +42,8 @@ Individuo selection(Population * population, int seed){
 
 }
 
-Individuo selection_in_4(Population * population, int seed){
-    srand(time(NULL)+seed);
-    seed--;
+Individuo selection_in_4(Population * population){
+    srand(microseg());
     int Position[4];
     Position[0] = rand() % population->populationSz;
     Position[1] = rand() % population->populationSz;

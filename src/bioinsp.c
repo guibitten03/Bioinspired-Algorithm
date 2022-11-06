@@ -8,11 +8,9 @@
 #define PUT_ON 1
 #define N_PUT_ON 0
 
-int seed = 0;
-
 Individuo crossing_parse(Individuo firstParent, Individuo secondParent);
 
-int bioinsp(Matrix matrix, int populationSz, int plato){
+int bioinsp(Matrix matrix, int populationSz, int plato, int mutationP){
 
     #ifdef printSteps
     printf("Population is beeing created...\n");
@@ -42,7 +40,7 @@ int bioinsp(Matrix matrix, int populationSz, int plato){
         printf("Applying darwinism...\n");
         #endif
 
-        darwinism(&population, 20);
+        darwinism(&population, mutationP);
 
         generation++;
     //}while(0);
@@ -80,8 +78,8 @@ Individuo createIndividuo(int individuoSz){
     individuo.traits = (int*)malloc(individuoSz*sizeof(int));
     individuo.traitsSz = individuoSz;
 
-    srand(time(NULL)+seed);
-    seed++;
+    srand(microseg());
+
     for(int c=0; c<individuoSz; c++){
         random = rand()  % individuoSz;
         
@@ -118,8 +116,7 @@ void destroyPopulation(Population * pop){
 void mutation(Individuo * individuo, int mutationP){
     int random1, random2, aux;
     
-    srand(time(NULL)+seed);
-    seed++;
+    srand(microseg());
     for(int c=0; c<individuo->traitsSz; c++){
         random1 = (rand()%100);
 
@@ -198,7 +195,7 @@ void darwinism(Population * population, int mutationP){
         newPopulation->traitsSz = population->matrix.len;
         newPopulation[i].traits = NULL;
         //newPopulation[i] = selection(population, seed);
-        newPopulation[i] = selection_in_4(population, seed);
+        newPopulation[i] = selection_in_4(population);
     }
 
     #ifdef printSteps

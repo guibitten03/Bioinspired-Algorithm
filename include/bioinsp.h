@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "file.h"
+#include "microseg.h"
 
 
 typedef struct individuo_t Individuo;
@@ -24,7 +25,7 @@ struct population_t{
     Individuo bestIndividuo;
 };
 
-int bioinsp(Matrix matrix, int populationSz, int plato);
+int bioinsp(Matrix matrix, int populationSz, int plato, int mutationP);
 Population createPopulation(Matrix matrix, int populationSz);
 Individuo createIndividuo(int individuoSz);
 void darwinism(Population * population, int mutationP);
