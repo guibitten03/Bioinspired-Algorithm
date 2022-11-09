@@ -140,13 +140,16 @@ Individuo crossing_parse(Individuo firstParent, Individuo secondParent, int fInd
 
     int stripParent[strip];
 
+    printf("Strip: ");
     for(int i = 0; i < strip; i++){ 
         stripParent[i] = secondParent.traits[i + fIndex];
+        printf("%d ", stripParent[i]);
     }
+    printf("\n");
 
     int index = sIndex + 1;
-    int count = index;
-    while(count < traits){
+    int count = index, t = 0;
+    while(t == traits){
         int inStrip = 0;
         for(int i = 0; i < strip; i++){
             if(firstParent.traits[index] == stripParent[i]){
@@ -161,13 +164,15 @@ Individuo crossing_parse(Individuo firstParent, Individuo secondParent, int fInd
         if(count == fIndex){
             for(int i = 0; i < strip; i++){
                 child.traits[count] = stripParent[i];
-                count++;
+                count = (count + 1) % traits;
+                t++;
             }
 
         }else{
             child.traits[count] = firstParent.traits[index];
             index = (index + 1) % traits;
-            count++;
+            count = (count + 1) % traits;
+            t++;
         }
     }
 
