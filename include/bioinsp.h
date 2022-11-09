@@ -30,7 +30,7 @@ int bioinsp(Matrix matrix, int populationSz, int plato, int mutationP);
 Population createPopulation(Matrix matrix, int populationSz);
 Individuo createIndividuo(int individuoSz);
 void darwinism(Population * population, int mutationP);
-Individuo crossover(Individuo father, Individuo mother, int order);
+Individuo crossover(Individuo father, Individuo mother, int order, int fIndex, int sIndex);
 void mutation(Individuo* individuo, int mutationP);
 
 void destroyIndividuo(Individuo * i);

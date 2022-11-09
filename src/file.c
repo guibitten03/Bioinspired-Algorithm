@@ -13,8 +13,9 @@ void argsParse(Args a, int argc, char ** argv){
 }
 
 void argShowUsage(char * programName){
-    fprintf(stderr, "Usage: %s <filePath> <fileType>\n\n", programName);
+    fprintf(stderr, "Usage: %s <filePath> <fileType> <populationSize> <platô> <mutation>\n\n", programName);
     fprintf(stderr, "File Types: <lau> or <sgb>\n\n");
+    fprintf(stderr, "Mutation: In percent <0%% - 100%%>\n\n");
     
 }
 
