@@ -132,45 +132,58 @@ void mutation(Individuo * individuo, int mutationP){
 
 Individuo crossing_parse(Individuo firstParent, Individuo secondParent){
     int traits = firstParent.traitsSz;
-    int strip = (int)traits / 3;
+
+    srand(microseg());
+
+    int fIndex, sIndex, guard = 1;
+
+    // Guarda para verificar se não são iguais, 0 ou traits
+    while(guard){
+        fIndex = rand() % traits;
+        sIndex = rand() % traits;
+
+        bool oEquals = (fIndex >= sIndex);
+        bool zero = ((fIndex == 0) & (sIndex == 0));
+        bool total = ((fIndex == (traits - 1)) & (sIndex == (traits - 1)));
+        if(!(oEquals | zero | total)){
+            guard = 0;
+        }
+    }
+
+    int strip = (sIndex - fIndex) + 1;
+
     Individuo child = createIndividuo(traits);
 
-
-    int parent_traits[traits];
-    int strip_parent[strip];
-
-    for(int i = 0; i < traits; i++){
-        parent_traits[i] = firstParent.traits[(i + strip - 1) % traits];
-    }
+    int stripParent[strip];
 
     for(int i = 0; i < strip; i++){ 
-        strip_parent[i] = secondParent.traits[i + strip];
+        stripParent[i] = secondParent.traits[i + strip];
     }
 
+    int index = sIndex + 1;
     int count = 0;
-    int i = 0;
-    int control = PUT_ON;
     while(count < traits){
-        for(int j = 0; j < strip; j++){
-            if(parent_traits[i] == strip_parent[j]){
-                control = N_PUT_ON;
+        int inStrip = 0;
+        for(int i = 0; i < strip; i++){
+            if(firstParent.traits[index] == stripParent[i]){
+                index = (index + 1) % traits;
+                inStrip = 1;
                 break;
             }
         }
 
-        if(control){
-            child.traits[count] = parent_traits[i];
-            count++;
-        }
+        if(inStrip){ continue; }
 
-        if(count == strip){
-            for(int j = 0; j < strip; j++){
-                child.traits[j + strip] = strip_parent[j];
+        if(count == fIndex){
+            for(int i = 0; i < strip; i++){
+                child.traits[count] = stripParent[i];
                 count++;
             }
+        }else{
+            child.traits[count] = firstParent.traits[index];
+            index = (index + 1) % traits;
+            count++;
         }
-        i++;
-        control = PUT_ON;
     }
 
     return child;

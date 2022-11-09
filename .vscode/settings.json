@@ -2,6 +2,7 @@
     "files.associations": {
         "string.h": "c",
         "evaluation.h": "c",
-        "bioinsp.h": "c"
+        "bioinsp.h": "c",
+        "stdbool.h": "c"
     }
 }
