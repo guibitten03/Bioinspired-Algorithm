@@ -130,66 +130,91 @@ void mutation(Individuo * individuo, int mutationP){
     }
 }
 
-Individuo crossing_parse(Individuo firstParent, Individuo secondParent, int fIndex, int sIndex){
+Individuo crossing_parse(Individuo firstParent, Individuo secondParent, int sIndex, int fIndex){
     int traits = firstParent.traitsSz;
 
-    int strip = (sIndex - fIndex) + 1;
+    int strip = (fIndex - sIndex) + 1;
 
 
     Individuo child = createIndividuo(traits);
 
-    int stripParent[strip];
+    // int stripParent[strip];
 
-    printf("Strip: ");
+    // printf("Strip: ");
+    // for(int i = 0; i < strip; i++){ 
+    //     stripParent[i] = secondParent.traits[i + fIndex];
+    //     printf("%d ", stripParent[i]);
+    // }
+    // printf("\n");
+
+    // printf("Strip: ");
     for(int i = 0; i < strip; i++){ 
-        stripParent[i] = secondParent.traits[i + fIndex];
-        printf("%d ", stripParent[i]);
+        child.traits[i + sIndex] = secondParent.traits[i + sIndex];
+        // printf("%d ", child.traits[i + sIndex]);
     }
-    printf("\n");
+    // printf("\n");
 
-    int index = sIndex + 1;
-    int count = index, t = 0;
-    while(t == traits){
+    int count = fIndex + 1;
+    int index = fIndex + 1;
+    while(count != sIndex){
         int inStrip = 0;
-        for(int i = 0; i < strip; i++){
-            if(firstParent.traits[index] == stripParent[i]){
+        for(int i = 0; i < strip; i++){ 
+            if(child.traits[i + sIndex] == firstParent.traits[index]){
                 index = (index + 1) % traits;
                 inStrip = 1;
                 break;
             }
         }
-
         if(inStrip){ continue; }
 
-        if(count == fIndex){
-            for(int i = 0; i < strip; i++){
-                child.traits[count] = stripParent[i];
-                count = (count + 1) % traits;
-                t++;
-            }
-
-        }else{
-            child.traits[count] = firstParent.traits[index];
-            index = (index + 1) % traits;
-            count = (count + 1) % traits;
-            t++;
-        }
+        child.traits[count] = firstParent.traits[index];
+        count = (count + 1) % traits;
+        index = (index + 1) % traits;
     }
 
-    printf("Filho: ");
-    for(int i = 0; i < traits; i++){
-        printf("%d ", child.traits[i]);
-    }
-    printf("\n");
+    // int index = sIndex + 1;
+    // int count = index, t = 0;
+    // while(t == traits){
+    //     int inStrip = 0;
+    //     for(int i = 0; i < strip; i++){
+    //         if(firstParent.traits[index] == stripParent[i]){
+    //             index = (index + 1) % traits;
+    //             inStrip = 1;
+    //             break;
+    //         }
+    //     }
+
+    //     if(inStrip){ continue; }
+
+    //     if(count == fIndex){
+    //         for(int i = 0; i < strip; i++){
+    //             child.traits[count] = stripParent[i];
+    //             count = (count + 1) % traits;
+    //             t++;
+    //         }
+
+    //     }else{
+    //         child.traits[count] = firstParent.traits[index];
+    //         index = (index + 1) % traits;
+    //         count = (count + 1) % traits;
+    //         t++;
+    //     }
+    // }
+
+    // printf("Filho: ");
+    // for(int i = 0; i < traits; i++){
+    //     printf("%d ", child.traits[i]);
+    // }
+    // printf("\n");
 
     return child;
 }
 
-Individuo crossover(Individuo father, Individuo mother, int order, int fIndex, int sIndex){
+Individuo crossover(Individuo father, Individuo mother, int order, int sIndex, int fIndex){
     if(order == 0){
-        return crossing_parse(father, mother, fIndex, sIndex);
+        return crossing_parse(father, mother, sIndex, fIndex);
     }else{
-        return crossing_parse(mother, father, fIndex, sIndex);
+        return crossing_parse(mother, father, sIndex, fIndex);
     }
 }
 
@@ -221,7 +246,7 @@ void darwinism(Population * population, int mutationP){
             fIndex = (rand() % traits) - 1;
             sIndex = (rand() % traits) - 1;
 
-            bool oEquals = (fIndex >= sIndex);
+            bool oEquals = (sIndex >= fIndex);
             bool zero = ((fIndex <= 0) | (sIndex <= 0));
             bool total = ((fIndex == (traits - 1)) | (sIndex == (traits - 1)));
             if(!(oEquals | zero | total)){
@@ -230,23 +255,23 @@ void darwinism(Population * population, int mutationP){
         }
 
         if(i == (population->populationSz - 1)){
-            newPopulation[i] = crossover(population->population[i], population->population[0], 0, fIndex, sIndex);
+            newPopulation[i] = crossover(population->population[i], population->population[0], 0, sIndex, fIndex);
             break;
         }else{
-            printf("%d %d\n", fIndex, sIndex);
-            printf("Pai: ");
-            for(int j = 0; j < traits; j++){
-                printf("%d ", population->population[i].traits[j]);
-            }
-            printf("\n");
+            // printf("%d %d\n", sIndex, fIndex);
+            // printf("Pai: ");
+            // for(int j = 0; j < traits; j++){
+            //     printf("%d ", population->population[i].traits[j]);
+            // }
+            // printf("\n");
 
-            printf("Mae: ");
-            for(int j = 0; j < traits; j++){
-                printf("%d ", population->population[i+1].traits[j]);
-            }
-            printf("\n");
-            newPopulation[i] = crossover(population->population[i], population->population[i+1], 0, fIndex, sIndex);
-            newPopulation[i + 1] = crossover(population->population[i], population->population[i+1], 1, fIndex, sIndex);
+            // printf("Mae: ");
+            // for(int j = 0; j < traits; j++){
+            //     printf("%d ", population->population[i+1].traits[j]);
+            // }
+            // printf("\n");
+            newPopulation[i] = crossover(population->population[i], population->population[i+1], 0, sIndex, fIndex);
+            newPopulation[i + 1] = crossover(population->population[i], population->population[i+1], 1, sIndex, fIndex);
         }
 
     }
