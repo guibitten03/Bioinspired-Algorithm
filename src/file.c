@@ -3,7 +3,7 @@
 #define BUFFER_LEN 5000
 
 void argsParse(Args a, int argc, char ** argv){
-    if (argc < 3){
+    if (argc < 6){
         argShowUsage(argv[0]);
         exit(EXIT_FAILURE);
     }
