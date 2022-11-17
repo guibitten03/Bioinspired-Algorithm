@@ -7,7 +7,7 @@
 int main(int argc, char ** argv){
 
     Matrix matrix = fileGetMatrix(argc, argv);
-    //int dist = bioinsp(matrix, 1000, 100, 20);
+    
     int dist = bioinsp(matrix, atoi((argv[3])), atoi((argv[4])), atoi((argv[5])));
     printf("%d\n", dist);
 

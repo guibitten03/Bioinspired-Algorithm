@@ -45,7 +45,7 @@ Matrix fileGetMatrix(int argc, char ** argv){
         fprintf(stderr, "Could not open file: %s\n", arguments.filePath);
         matrix.matrix = NULL;
         matrix.len = 0;
-        return matrix; //retornar  alguma coisa
+        return matrix; 
     }
 
     if (!strcmp(arguments.type, "lau")){ matrixSize = 15; }
@@ -69,7 +69,7 @@ Matrix createMatrix(FILE * inputFile, int matrixSize){
     matrix.matrix = (int**)malloc(matrixSize*sizeof(int**));
     for(int c=0; c<matrixSize; c++){
         matrix.matrix[c] = (int*)malloc(matrixSize*sizeof(int));
-        //matrix.matrix[c] = (int*)malloc(matrixSize*sizeof(int*));
+        
     }
 
     matrix.len = matrixSize;
