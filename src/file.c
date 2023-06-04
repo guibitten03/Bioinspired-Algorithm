@@ -14,7 +14,7 @@ void argsParse(Args a, int argc, char ** argv){
 
 void argShowUsage(char * programName){
     fprintf(stderr, "Usage: %s <filePath> <fileType> <populationSize> <platô> <mutation>\n\n", programName);
-    fprintf(stderr, "File Types: <lau> or <sgb>\n\n");
+    fprintf(stderr, "File Types: <lau> or <sgb> or <crt>\n\n");
     fprintf(stderr, "Mutation: In percent <0%% - 100%%>\n\n");
     
 }
@@ -79,11 +79,6 @@ Matrix createMatrix(FILE * inputFile, int matrixSize){
         matrix.matrix[c] = (float*)malloc(matrixSize*sizeof(float));
         
     }
-    // matrix.matrix = (int**)malloc(matrixSize*sizeof(int**));
-    // for(int c=0; c<matrixSize; c++){
-    //     matrix.matrix[c] = (int*)malloc(matrixSize*sizeof(int));
-        
-    // }
 
     matrix.len = matrixSize;
 
@@ -113,11 +108,7 @@ Matrix createMatrix(FILE * inputFile, int matrixSize){
 Matrix createMatrixToCartesian(FILE * inputFile){
     Matrix matrix;
     Point *points;
-    // char delimit[]= " \t\r\n\v\f";
-    // char buffer[BUFFER_LEN];
-    // char *aux;
     int matrixSize;
-    // int x,y;
 
     fscanf(inputFile,"%d", &matrixSize);
     
