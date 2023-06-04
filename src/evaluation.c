@@ -1,7 +1,7 @@
 #include "evaluation.h"
 
-int routeCalculate(Individuo individuo, Matrix matrix){    
-    int distancia = 0;
+float routeCalculate(Individuo individuo, Matrix matrix){    
+    float distancia = 0;
 
     for(int i = 0; i < matrix.len-1; i++){
         distancia += matrix.matrix[individuo.traits[i]][individuo.traits[i+1]];  

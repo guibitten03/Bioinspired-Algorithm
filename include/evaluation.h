@@ -6,7 +6,7 @@
 #include "microseg.h"
 
 void evaluation(Population * population);
-int routeCalculate(Individuo individuo, Matrix matrix);
+float routeCalculate(Individuo individuo, Matrix matrix);
 Individuo selection(Population * population);
 Individuo selection_in_4(Population * population);
 

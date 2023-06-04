@@ -14,7 +14,7 @@ typedef struct population_t Population;
 struct individuo_t{
     int traitsSz;
     int * traits;
-    int dist;
+    float dist;
 };
 
 struct population_t{

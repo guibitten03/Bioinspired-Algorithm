@@ -17,7 +17,7 @@ int bioinsp(Matrix matrix, int populationSz, int plato, int mutationP){
     #endif
 
     int stop = 0;
-    int pastBestDist = INFINITO;
+    float pastBestDist = INFINITO;
     Population population = createPopulation(matrix, populationSz);
     int generation = 1;
 
